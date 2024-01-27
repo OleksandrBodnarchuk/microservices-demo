@@ -26,4 +26,12 @@ public class EmployeeServiceExceptionHandler {
     return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
+
+  @ExceptionHandler({DepartmentServiceException.class})
+  public ResponseEntity<?> departmentServiceException(DepartmentServiceException ex,
+      WebRequest request) {
+    ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
+        request.getDescription(false));
+    return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+  }
 }

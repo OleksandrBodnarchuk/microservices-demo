@@ -5,9 +5,7 @@ import java.net.URI;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import pl.alex.employeeservice.dto.DepartmentDTO;
 import pl.alex.employeeservice.dto.EmployeeAPIResponseDTO;
@@ -23,11 +21,8 @@ import pl.alex.employeeservice.repository.EmployeeRepository;
 public class EmployeeServiceImpl implements EmployeeService, CallForDepartmentDetails {
 
   private final EmployeeRepository employeeRepository;
-  private final WebClient webClient;
+  private final EmployeeServiceAPIClient apiClient;
   private final ObjectMapper objectMapper;
-
-  @Value("${department.service.url}")
-  private String departmentServiceUrl;
 
   @Override
   public void saveEmployee(EmployeeDTO employeeDTO) {
@@ -55,19 +50,8 @@ public class EmployeeServiceImpl implements EmployeeService, CallForDepartmentDe
 
   @Override
   public DepartmentDTO getDepartmentByCode(String departmentCode) {
-    final URI uri = prepareUrl(UrlParameters.builder()
-        .url(departmentServiceUrl)
-        .id(departmentCode+"1")
-        .build());
     try {
-
-      String jsonResponse = webClient.get()
-          .uri(uri)
-          .retrieve()
-          .bodyToMono(String.class)
-          .block();
-
-      return getValueFromJson(jsonResponse, DepartmentDTO.class);
+      return apiClient.getDepartmentByDepartmentCode(departmentCode);
     } catch (Exception e) {
       throw new DepartmentServiceException(e.getMessage());
     }
