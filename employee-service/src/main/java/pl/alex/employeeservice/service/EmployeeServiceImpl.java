@@ -6,10 +6,8 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import pl.alex.employeeservice.dto.DepartmentDTO;
 import pl.alex.employeeservice.dto.EmployeeAPIResponseDTO;
@@ -25,7 +23,7 @@ import pl.alex.employeeservice.repository.EmployeeRepository;
 public class EmployeeServiceImpl implements EmployeeService, CallForDepartmentDetails {
 
   private final EmployeeRepository employeeRepository;
-  private final RestTemplate restTemplate;
+  private final WebClient webClient;
   private final ObjectMapper objectMapper;
 
   @Value("${department.service.url}")
@@ -59,16 +57,21 @@ public class EmployeeServiceImpl implements EmployeeService, CallForDepartmentDe
   public DepartmentDTO getDepartmentByCode(String departmentCode) {
     final URI uri = prepareUrl(UrlParameters.builder()
         .url(departmentServiceUrl)
-        .id(departmentCode)
+        .id(departmentCode+"1")
         .build());
-    final ResponseEntity<String> responseEntity = restTemplate.exchange(uri, HttpMethod.GET,
-        null, String.class);
+    try {
 
-    final String jsonResponse = responseEntity.getBody();
-    if (responseEntity.getStatusCode().is2xxSuccessful()) {
+      String jsonResponse = webClient.get()
+          .uri(uri)
+          .retrieve()
+          .bodyToMono(String.class)
+          .block();
+
       return getValueFromJson(jsonResponse, DepartmentDTO.class);
+    } catch (Exception e) {
+      throw new DepartmentServiceException(e.getMessage());
     }
-    throw new DepartmentServiceException(jsonResponse);
+
   }
 
   @Override
