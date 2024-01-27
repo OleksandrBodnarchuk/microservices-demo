@@ -2,6 +2,7 @@ package pl.alex.departmentservice.controller;
 
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,7 @@ public class DepartmentController {
       consumes = {"application/json"})
   public ResponseEntity<DepartmentDTO> saveDepartment(@RequestBody DepartmentDTO departmentDTO) {
     departmentService.saveDepartment(departmentDTO);
-    return ResponseEntity.ok(departmentDTO);
+    return new ResponseEntity<>(departmentDTO, HttpStatus.CREATED);
   }
 
   @GetMapping
