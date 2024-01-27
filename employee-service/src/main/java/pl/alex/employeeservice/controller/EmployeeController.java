@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.alex.employeeservice.dto.EmployeeAPIResponseDTO;
 import pl.alex.employeeservice.dto.EmployeeDTO;
 import pl.alex.employeeservice.service.EmployeeService;
 
@@ -29,7 +30,7 @@ public class EmployeeController {
   }
 
   @GetMapping
-  public ResponseEntity<EmployeeDTO> getEmployeeByUUID(@RequestParam(value = "id") UUID uuid) {
+  public ResponseEntity<EmployeeAPIResponseDTO> getEmployeeByUUID(@RequestParam(value = "id") UUID uuid) {
     return ResponseEntity.ok(employeeService.getByUUID(uuid));
   }
 

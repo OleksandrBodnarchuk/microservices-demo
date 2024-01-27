@@ -1,6 +1,5 @@
 package pl.alex.departmentservice.controller;
 
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +28,8 @@ public class DepartmentController {
   }
 
   @GetMapping
-  public ResponseEntity<DepartmentDTO> getDepartmentByUUID(@RequestParam(value = "id") UUID uuid) {
-    return ResponseEntity.ok(departmentService.getByUUID(uuid));
+  public ResponseEntity<DepartmentDTO> getDepartmentByUUID(@RequestParam(value = "id") String departmentCode) {
+    return ResponseEntity.ok(departmentService.getByDepartmentCode(departmentCode));
   }
 
 }

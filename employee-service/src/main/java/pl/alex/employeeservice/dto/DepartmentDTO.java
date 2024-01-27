@@ -1,4 +1,4 @@
-package pl.alex.departmentservice.dto;
+package pl.alex.employeeservice.dto;
 
 import lombok.Builder;
 
