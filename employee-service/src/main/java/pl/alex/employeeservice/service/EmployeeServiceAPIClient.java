@@ -8,7 +8,7 @@ import pl.alex.employeeservice.dto.DepartmentDTO;
 @FeignClient(name = "DEPARTMENT-SERVICE")
 public interface EmployeeServiceAPIClient {
 
-  @GetMapping("/departments")
+  @GetMapping("/api/departments")
   DepartmentDTO getDepartmentByDepartmentCode(@RequestParam(value = "id") String departmentCode);
 
 }
