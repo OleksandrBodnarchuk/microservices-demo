@@ -15,7 +15,7 @@ import pl.alex.employeeservice.dto.EmployeeDTO;
 import pl.alex.employeeservice.service.EmployeeService;
 
 @RestController
-@RequestMapping("/employees")
+@RequestMapping("/api/employees")
 @RequiredArgsConstructor
 public class EmployeeController {
 

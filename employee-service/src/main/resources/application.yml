@@ -15,7 +15,7 @@ server:
 
 department:
   service:
-    url: http://localhost:8090/departments
+    url: http://localhost:8090/api/departments
 
 eureka:
   instance:

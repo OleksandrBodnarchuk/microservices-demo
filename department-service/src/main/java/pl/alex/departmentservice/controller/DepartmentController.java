@@ -13,7 +13,7 @@ import pl.alex.departmentservice.dto.DepartmentDTO;
 import pl.alex.departmentservice.service.DepartmentService;
 
 @RestController
-@RequestMapping("/departments")
+@RequestMapping("/api/departments")
 @RequiredArgsConstructor
 public class DepartmentController {
 
