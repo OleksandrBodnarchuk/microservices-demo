@@ -1,6 +1,15 @@
 spring:
   application:
     name: CONFIG-SERVER
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/OleksandrBodnarchuk/configuration-server-demo
+          # clone at the startup
+          clone-on-start: true
+          # keep all the files on master branch
+          default-label: main
 
 server:
   port: 8888
