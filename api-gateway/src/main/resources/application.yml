@@ -1,40 +1,6 @@
-eureka:
-  instance:
-    client:
-      serverUrl:
-        defaultZone: http://localhost:8761/eureka/
-logging:
-  level:
-    org:
-      springframework:
-        cloud:
-          gateway:
-            handler:
-              RoutePredicateHandlerMapping: DEBUG
 spring:
   application:
     name: API-GATEWAY
-  cloud:
-    gateway:
-      discovery:
-        locator:
-          # allows to automatically locate needed service.
-          # NOTE: service name should be in request url --> http://localhost:9191/employee-service/api/employee/....
-          enabled: true
-          lower-case-service-id: true
-  #      routes[0]:
-  #        id: EMPLOYEE-SERVICE
-  #        uri: lb://EMPLOYEE-SERVICE
-  #        predicates[0]: Path=/api/employees/**
-  #      routes[1]:
-  #        id: DEPARTMENT-SERVICE
-  #        uri: lb://DEPARTMENT-SERVICE
-  #        predicates[0]: Path=/api/departments/**
+  config:
+    import: optional:configserver:http://localhost:8888
 
-server:
-  port: 9191
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
