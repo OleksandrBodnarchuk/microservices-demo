@@ -42,16 +42,16 @@ public class EmployeeServiceImpl implements EmployeeService, CallForDepartmentDe
       EmployeeDTO employeeDTO = EmployeeDTO.getEmployeeDTO(optionalEmployee.get());
       return EmployeeAPIResponseDTO.builder()
           .employee(employeeDTO)
-          .department(getDepartmentByCode(employeeDTO.departmentCode()))
+          .department(getByDepartmentUUID(employeeDTO.departmentCode()))
           .build();
     }
     throw new EmployeeNotFoundException(String.format("Employee %s not found", uuid));
   }
 
   @Override
-  public DepartmentDTO getDepartmentByCode(String departmentCode) {
+  public DepartmentDTO getByDepartmentUUID(String departmentUUID) {
     try {
-      return apiClient.getDepartmentByDepartmentCode(departmentCode);
+      return apiClient.getDepartmentByDepartmentUUID(UUID.fromString(departmentUUID));
     } catch (Exception e) {
       throw new DepartmentServiceException(e.getMessage());
     }

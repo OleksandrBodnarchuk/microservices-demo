@@ -1,5 +1,7 @@
 package pl.alex.departmentservice.controller;
 
+import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +24,15 @@ public class DepartmentController {
   @PostMapping(value = "/save",
       produces = {"application/json"},
       consumes = {"application/json"})
-  public ResponseEntity<DepartmentDTO> saveDepartment(@RequestBody DepartmentDTO departmentDTO) {
+  public ResponseEntity<DepartmentDTO> saveDepartment(@RequestBody @Valid DepartmentDTO departmentDTO) {
     departmentService.saveDepartment(departmentDTO);
     return new ResponseEntity<>(departmentDTO, HttpStatus.CREATED);
   }
 
   @GetMapping
-  public ResponseEntity<DepartmentDTO> getDepartmentByDepartmentCode(
-      @RequestParam(value = "id") String departmentCode) {
-    return ResponseEntity.ok(departmentService.getByDepartmentCode(departmentCode));
+  public ResponseEntity<DepartmentDTO> getDepartmentByDepartmentUUID(
+      @RequestParam(value = "id") UUID departmentUUID) {
+    return ResponseEntity.ok(departmentService.getByDepartmentUUID(departmentUUID));
   }
 
 }

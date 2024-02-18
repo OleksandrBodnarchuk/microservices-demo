@@ -10,5 +10,5 @@ public interface EmployeeService {
   void saveEmployee(EmployeeDTO employeeDTO);
 
   EmployeeAPIResponseDTO getByUUID(UUID uuid);
-  DepartmentDTO getDepartmentByCode(String departmentCode);
+  DepartmentDTO getByDepartmentUUID(String departmentCode);
 }
