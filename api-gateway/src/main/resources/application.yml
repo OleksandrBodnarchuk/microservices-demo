@@ -1,6 +1,40 @@
+server:
+  port: 9191
+
 spring:
   application:
     name: API-GATEWAY
   config:
     import: optional:configserver:http://localhost:8888
+  cloud:
+    gateway:
+      routes[0]:
+        id: EMPLOYEE-SERVICE
+        uri: lb://EMPLOYEE-SERVICE
+        predicates[0]: Path=/api/employees/**
+      routes[1]:
+        id: DEPARTMENT-SERVICE
+        uri: lb://DEPARTMENT-SERVICE
+        predicates[0]: Path=/api/departments/**
+
+eureka:
+  instance:
+    client:
+      serverUrl:
+        defaultZone: http://localhost:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  pattern:
+    level: '%p[${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+  level:
+    org.springframework.web: DEBUG
 

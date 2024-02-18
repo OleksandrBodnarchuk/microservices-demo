@@ -1,6 +1,7 @@
 package pl.alex.departmentservice.service;
 
 import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.alex.departmentservice.exception.DepartmentNotFoundException;
@@ -25,8 +26,8 @@ public class DepartmentServiceImpl implements DepartmentService {
   }
 
   @Override
-  public DepartmentDTO getByDepartmentCode(String departmentCode) {
-    Optional<Department> optionalDepartment = departmentRepository.findByCode(departmentCode);
+  public DepartmentDTO getByDepartmentUUID(UUID departmentUUID) {
+    Optional<Department> optionalDepartment = departmentRepository.findById(departmentUUID);
     if (optionalDepartment.isPresent()) {
       Department department = optionalDepartment.get();
       return DepartmentDTO.builder()
@@ -35,6 +36,6 @@ public class DepartmentServiceImpl implements DepartmentService {
           .code(department.getCode())
           .build();
     }
-    throw new DepartmentNotFoundException(String.format("Department not found: %s", departmentCode));
+    throw new DepartmentNotFoundException(String.format("Department not found: %s", departmentUUID));
   }
 }

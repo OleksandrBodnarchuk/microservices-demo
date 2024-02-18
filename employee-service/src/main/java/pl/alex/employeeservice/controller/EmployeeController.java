@@ -1,5 +1,6 @@
 package pl.alex.employeeservice.controller;
 
+import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class EmployeeController {
   @PostMapping(value = "/save",
       produces = {"application/json"},
       consumes = {"application/json"})
-  public ResponseEntity<EmployeeDTO> saveEmployee(@RequestBody EmployeeDTO EmployeeDTO) {
+  public ResponseEntity<EmployeeDTO> saveEmployee(@RequestBody @Valid EmployeeDTO EmployeeDTO) {
     employeeService.saveEmployee(EmployeeDTO);
     return new ResponseEntity<>(EmployeeDTO, HttpStatus.CREATED);
   }
