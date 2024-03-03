@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.alex.employeeservice.dto.DepartmentDTO;
 
 @FeignClient(name = "DEPARTMENT-SERVICE")
-public interface EmployeeServiceAPIClient {
+public interface DepartmentServiceAPIClient {
 
   @GetMapping("/api/departments")
   DepartmentDTO getDepartmentByDepartmentUUID(@RequestParam(value = "id") UUID departmentUUID);

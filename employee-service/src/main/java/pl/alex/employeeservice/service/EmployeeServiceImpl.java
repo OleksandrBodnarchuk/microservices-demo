@@ -10,6 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import pl.alex.employeeservice.dto.DepartmentDTO;
 import pl.alex.employeeservice.dto.EmployeeAPIResponseDTO;
 import pl.alex.employeeservice.dto.EmployeeDTO;
+import pl.alex.employeeservice.dto.OrganizationDTO;
 import pl.alex.employeeservice.entity.Employee;
 import pl.alex.employeeservice.exception.DepartmentServiceException;
 import pl.alex.employeeservice.exception.EmployeeNotFoundException;
@@ -22,7 +23,8 @@ import pl.alex.employeeservice.repository.EmployeeRepository;
 public class EmployeeServiceImpl implements EmployeeService, CallForDepartmentDetails {
 
   private final EmployeeRepository employeeRepository;
-  private final EmployeeServiceAPIClient apiClient;
+  private final DepartmentServiceAPIClient departmentServiceAPIClient;
+  private final OrganizationServiceAPIClient organizationServiceAPIClient;
   private final ObjectMapper objectMapper;
 
   @Override
@@ -38,15 +40,25 @@ public class EmployeeServiceImpl implements EmployeeService, CallForDepartmentDe
       return EmployeeAPIResponseDTO.builder()
           .employee(employeeDTO)
           .department(getByDepartmentUUID(employeeDTO.departmentCode()))
+          .organization(getByOrganizationCode(employeeDTO.organizationCode()))
           .build();
     }
     throw new EmployeeNotFoundException(String.format("Employee %s not found", uuid));
   }
 
   @Override
+  public OrganizationDTO getByOrganizationCode(String organizationCode) {
+    try {
+      return organizationServiceAPIClient.getOrganizationByCode(organizationCode);
+    } catch (Exception e) {
+      throw new DepartmentServiceException(e.getMessage());
+    }
+  }
+
+  @Override
   public DepartmentDTO getByDepartmentUUID(String departmentUUID) {
     try {
-      return apiClient.getDepartmentByDepartmentUUID(UUID.fromString(departmentUUID));
+      return departmentServiceAPIClient.getDepartmentByDepartmentUUID(UUID.fromString(departmentUUID));
     } catch (Exception e) {
       throw new DepartmentServiceException(e.getMessage());
     }

@@ -7,6 +7,7 @@ import lombok.Builder;
 public record EmployeeDTO(String firstName,
                           String lastName,
                           String email,
-                          @NotNull String departmentCode) {
+                          @NotNull String departmentCode,
+                          @NotNull String organizationCode) {
 
 }

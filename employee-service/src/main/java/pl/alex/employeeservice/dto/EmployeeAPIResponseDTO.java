@@ -4,6 +4,7 @@ import lombok.Builder;
 
 @Builder
 public record EmployeeAPIResponseDTO(EmployeeDTO employee,
-                                     DepartmentDTO department) {
+                                     DepartmentDTO department,
+                                     OrganizationDTO organization) {
 
 }
