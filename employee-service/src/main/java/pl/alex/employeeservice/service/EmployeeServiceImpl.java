@@ -14,6 +14,7 @@ import pl.alex.employeeservice.entity.Employee;
 import pl.alex.employeeservice.exception.DepartmentServiceException;
 import pl.alex.employeeservice.exception.EmployeeNotFoundException;
 import pl.alex.employeeservice.exception.UnexpectedServiceException;
+import pl.alex.employeeservice.mapper.EmployeeMapper;
 import pl.alex.employeeservice.repository.EmployeeRepository;
 
 @Service
@@ -26,20 +27,14 @@ public class EmployeeServiceImpl implements EmployeeService, CallForDepartmentDe
 
   @Override
   public void saveEmployee(EmployeeDTO employeeDTO) {
-    Employee employee = Employee.builder()
-        .firstName(employeeDTO.firstName())
-        .lastName(employeeDTO.lastName())
-        .email(employeeDTO.email())
-        .departmentCode(employeeDTO.departmentCode())
-        .build();
-    employeeRepository.save(employee);
+    employeeRepository.save(EmployeeMapper.toEntity(employeeDTO));
   }
 
   @Override
   public EmployeeAPIResponseDTO getByUUID(UUID uuid) {
     Optional<Employee> optionalEmployee = employeeRepository.findById(uuid);
     if (optionalEmployee.isPresent()) {
-      EmployeeDTO employeeDTO = EmployeeDTO.getEmployeeDTO(optionalEmployee.get());
+      EmployeeDTO employeeDTO = EmployeeMapper.toDto(optionalEmployee.get());
       return EmployeeAPIResponseDTO.builder()
           .employee(employeeDTO)
           .department(getByDepartmentUUID(employeeDTO.departmentCode()))
