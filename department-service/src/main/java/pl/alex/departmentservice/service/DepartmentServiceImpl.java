@@ -4,9 +4,10 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.alex.departmentservice.exception.DepartmentNotFoundException;
 import pl.alex.departmentservice.dto.DepartmentDTO;
 import pl.alex.departmentservice.entity.Department;
+import pl.alex.departmentservice.exception.DepartmentNotFoundException;
+import pl.alex.departmentservice.mapper.DepartmentMapper;
 import pl.alex.departmentservice.repository.DepartmentRepository;
 
 @Service
@@ -17,25 +18,16 @@ public class DepartmentServiceImpl implements DepartmentService {
 
   @Override
   public void saveDepartment(DepartmentDTO departmentDTO) {
-    Department department = Department.builder()
-        .name(departmentDTO.name())
-        .code(departmentDTO.code())
-        .description(departmentDTO.description())
-        .build();
-    departmentRepository.save(department);
+    departmentRepository.save(DepartmentMapper.toEntity(departmentDTO));
   }
 
   @Override
   public DepartmentDTO getByDepartmentUUID(UUID departmentUUID) {
     Optional<Department> optionalDepartment = departmentRepository.findById(departmentUUID);
     if (optionalDepartment.isPresent()) {
-      Department department = optionalDepartment.get();
-      return DepartmentDTO.builder()
-          .name(department.getName())
-          .description(department.getDescription())
-          .code(department.getCode())
-          .build();
+      return DepartmentMapper.toDto(optionalDepartment.get());
     }
-    throw new DepartmentNotFoundException(String.format("Department not found: %s", departmentUUID));
+    throw new DepartmentNotFoundException(
+        String.format("Department not found: %s", departmentUUID));
   }
 }
