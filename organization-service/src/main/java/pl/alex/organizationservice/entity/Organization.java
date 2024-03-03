@@ -1,4 +1,4 @@
-package pl.alex.employeeservice.entity;
+package pl.alex.organizationservice.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,23 +20,25 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "employees")
-public class Employee {
+@Table(name = "organizations")
+public class Organization {
 
   @Id
   @Builder.Default
   private UUID id = UUID.randomUUID();
 
-  private String firstName;
-  private String lastName;
-  private String email;
-  private String departmentCode;
-  private String organizationCode;
+  @Column(nullable = false)
+  private String name;
 
-  @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+  private String description;
+
+  @Column(nullable = false, unique = true)
+  private String code;
+
+  @Column(name = "created_at", nullable = false, updatable = false)
   private LocalDateTime createdAt;
 
-  @Column(name = "updated_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+  @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
 
   @PrePersist
@@ -49,5 +51,4 @@ public class Employee {
   protected void onUpdate() {
     this.updatedAt = LocalDateTime.now();
   }
-
 }

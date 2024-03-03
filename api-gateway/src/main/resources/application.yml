@@ -16,6 +16,10 @@ spring:
         id: DEPARTMENT-SERVICE
         uri: lb://DEPARTMENT-SERVICE
         predicates[0]: Path=/api/departments/**
+      routes[2]:
+        id: ORGANIZATION-SERVICE
+        uri: lb://ORGANIZATION-SERVICE
+        predicates[0]: Path=/api/organizations/**
 
 eureka:
   instance:
